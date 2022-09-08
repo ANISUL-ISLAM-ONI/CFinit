@@ -6,13 +6,14 @@
 
 ## Description
 
-[CFinit](https://github.com/ANISUL-ISLAM-ONI/CFinit)(CodeForces 'init'ialization) is an small contribution towards open source community and competitive programming community. This is a script for automation of Codeforces rounds. There is no need to manually copy input from problem description, this script do it for you for every single problem of a cf round and create snippet code instance for corresponding problem. Input description also included into your source code in a commented form so that you don't need to go back and forth from problem description to code editor. Here i used [Sublime Text 3](https://www.sublimetext.com/3) as a code editor. This is just an initiative, there is more to improve and automation. If you have any suggestion or find any kind of error in code (which absolutely normal to find), feel free to let me know or contribute independently. Looking forward for this initiative:
+[CFinit](https://github.com/ANISUL-ISLAM-ONI/CFinit) is a small contribution towards the open source community and competitive programming community. This is a script for automation of Codeforces rounds. There is no need to manually copy input from problem description, this script does it for you for every single problem of a cf round and creates c++ code template for corresponding problems. Input description is also included into your source code in a commented form so that you don't need to go back and forth from problem description to code editor. Here I used Sublime Text 3 as a code editor. This is just an initiative, there is more to improve and automation. If you have any suggestion or find any kind of error in code (which is absolutely normal to find), feel free to let me know or contribute independently. Looking forward for this initiative:
 - Multi-platform compatibility (For now only for linux)
 - All segment of input collection and automation for every segment for testing
 - Graphically more attractive and more user friendly
 - Compatible for every popular code editor
-- Customizable code editor for only Competitve Programming (If it is possible), where problem statement show in a window of code editor in embedded form not in browser.
-- Compatible for all popular Online Judge.
+- Customizable code editor for only Competitive Programming (If it is possible), where problem statements show in a window of the code editor in embedded form not in browser.
+- Compatible for all popular Online Judges.
+
 
 ## Installation
 ### Install Sublime Text 3
@@ -53,7 +54,7 @@ Or you can also run the program using app launcher<br><br>
 ![launcher](launcher.png)
 
 ## Use the app
-Choose the folder you want to store code<br><br>
+Choose the folder you want to store codes<br><br>
 ![selectfolder](selectfolder.png)<br><br>
 Collect the contest number from codeforces round<br><br>
 ![contestcode](contestcode.png)<br><br>
