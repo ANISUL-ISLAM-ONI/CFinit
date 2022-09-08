@@ -5,6 +5,8 @@ if [ "{$1}" = "{install}" ]; then
   cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User
   g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[1]/bits/stdc++.h
   g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[2]/bits/stdc++.h
+  apt-get install python3 python-is-python3
+  pip3 install Pillow beautifulsoup4 requests
   chmod +x inticon
   cp initcon /usr/local/bin
   cp CFinit.desktop ~/.local/share/applications
