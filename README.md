@@ -49,20 +49,20 @@ You can run the program from terminal using command :
 ```bash
 $ initcon
 ```
-Or you can also run the program using app launcher
+Or you can also run the program using app launcher<br><br>
 ![launcher](launcher.png)
 
 ## Use the app
-Choose the folder you want to store code
-![selectfolder](selectfolder.png)
-Collect the contest number from codeforces round
-![contestcode](contestcode.png)
-Enter the number into the program and click enter
-![contestnumber](contestnumber.png)
-Determine how many problem there in contest
-![problems](problems.png)
-Enter the problem count and click enter
-![problemsenter](problementer.png)
+Choose the folder you want to store code<br><br>
+![selectfolder](selectfolder.png)<br><br>
+Collect the contest number from codeforces round<br><br>
+![contestcode](contestcode.png)<br><br>
+Enter the number into the program and click enter<br><br>
+![contestnumber](contestnumber.png)<br><br>
+Determine how many problem there in contest<br><br>
+![problems](problems.png)<br><br>
+Enter the problem count and click enter<br><br>
+![problemsenter](problementer.png)<br><br>
 ### Enjoy...
 ![final](final.png)
 
