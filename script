@@ -1,0 +1,18 @@
+#! /bin/bash
+
+if [ "{$1}" = "{install}" ]; then
+  cp CP.sublime-build ~/.config/sublime-text-3/Packages/User
+  cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User
+  g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[1]/bits/stdc++.h
+  g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[2]/bits/stdc++.h
+  chmod +x inticon
+  cp initcon /usr/local/bin
+  cp CFinit.desktop ~/.local/share/applications
+  cp codeforces.png ~/.local/share/icons/hicolor/128x128/apps
+elif [ "{$1}" = "{uninstall}" ]; then
+  rm -rf /usr/local/bin/initcon
+  rm -rf ~/.local/share/applications/CFinit.desktop
+  rm -rf ~/.local/share/icons/hicolor/128x128/apps/codeforces.png
+else
+  echo "try again"
+fi

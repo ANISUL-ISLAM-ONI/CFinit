@@ -1,0 +1,10 @@
+// Settings in here override those in "Default/Preferences.sublime-settings",
+// and are overridden in turn by syntax-specific settings.
+{
+	"save_on_focus_lost": true,
+	"update_check": false,
+	"hot_exit": false,
+	"show_encoding": true,
+	"show_line_endings": true,
+	"tab_size": 2,
+}

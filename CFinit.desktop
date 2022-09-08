@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CFinit
+Comment=CFinit - An automated system for CF round coding
+Exec=/usr/local/bin/initcon
+Icon=/home/kali/.local/share/icons/hicolor/128x128/apps/codeforces.png
+Categories=Development;IDE;

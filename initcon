@@ -1,0 +1,648 @@
+#! /usr/bin/env python
+
+__author__  = "ANISUL-ISLAM-ONI"
+__version__ = "0.1.0"
+
+import os
+import string
+import tkinter as tk
+from tkinter import filedialog
+from PIL import Image, ImageTk
+import requests
+from io import BytesIO
+from bs4 import BeautifulSoup
+
+def collect_input(contstnum, probnum):
+	try:
+		URL = "https://codeforces.com/contest/%s/problem/%s"
+		page = requests.get(URL % (contstnum, probnum))
+		soup = BeautifulSoup(page.content, "html.parser")
+		input = soup.find("div", class_="input").find("pre")
+		input_div = input.find_all("div")
+		res = ""
+		if input_div == []:
+			res += input.text
+		else:
+			for inp in input:
+				res += f'{inp.text}\n'
+		res = res.strip()
+		res += '\n'
+		data_res = res
+		inp = soup.find("div", class_="input-specification")
+		ch = True
+		input_spec = ""
+		for inpu in inp:
+			if ch:
+				ch = False
+				continue
+			inpu = inpu.text
+			res = str(inpu)
+			res = res.strip()
+			res = res.replace("$$$", "")
+			res = res.replace("\\leq", "<=")
+			res = res.replace("\\left", "(")
+			res = res.replace("\\right", ")")
+			res = res.replace("}{", " / ")
+			res = res.replace("\\min", "min")
+			res = res.replace("\\frac", "")
+			res = res.replace("\\in", "=>")
+			res = res.replace("\\mathcal", "")
+			res = res.replace("\\circ", "o")
+			res = res.replace("\\{", "")
+			res = res.replace("\\}", "")
+			res = res.replace("{", "")
+			res = res.replace("}", "")
+			res = res.replace("\\le", "<=")
+			res = res.replace("\\ldots", "...")
+			res = res.replace("\\l", "<")
+			res = res.replace("\\eq", "=")
+			res = res.replace("\\e", "=")
+			res = res.replace("\\neq", "!=")
+			res = res.replace("\\ne", "!=")
+			res = res.replace("\\geq", ">=")
+			res = res.replace("\\ge", ">=")
+			res = res.replace("\\g", ">")
+			res = res.replace("\\cdot", "*")
+			res += '\n'
+			input_spec += res
+		# print(data_res)
+		# print(input_spec)
+		return data_res, input_spec
+	except:
+		return "", ""
+
+windo = tk.Tk()
+windo.withdraw()
+folder_selected = filedialog.askdirectory()
+windo.destroy()
+
+window = tk.Tk()
+window.title("CODEFORCES CTRL")
+window_width = 987
+window_height = 610
+
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+
+center_x = int(screen_width / 2 - window_width / 2)
+center_y = int(screen_height / 2 - window_height / 2)
+
+window.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+
+try:
+	response = requests.get("https://cdn.codeforces.com/s/87831/images/codeforces-sponsored-by-ton.png")
+	img = Image.open(BytesIO(response.content))
+	window.tk.call('wm', 'iconphoto', window._w, ImageTk.PhotoImage(img))
+except:
+	pass
+finally:
+	pass
+label_text = "Enter the contest code"
+label = tk.Label(text=label_text)
+label.pack()
+entry = tk.Entry(window)
+entry.pack()
+entry.focus_set()
+
+res_text = [folder_selected, ]
+
+def handle_click(event):
+  global entry
+  global res_text
+  global window
+  global label
+  global label_text
+  temp_text = entry.get()
+  res_text.append(temp_text)
+  entry.delete(0, 'end')
+  if label_text == "Enter how many problem there in contest":
+    window.destroy()
+  else:
+    label_text = "Enter how many problem there in contest"
+    label.config(text=label_text)
+
+button = tk.Button(text="ENTER", width=5, height=1, bg="blue", fg="black")
+button.bind("<Button-1>", handle_click)
+button.pack()
+
+window.mainloop()
+
+proj_name = res_text[1]
+
+if res_text[0] == ():
+	home_directory = os.path.expanduser('~')
+	res_text[0] = "%s/dumpFolderForContest_%s" % (home_directory, proj_name)
+
+proj_dir = res_text[0]
+if not os.path.exists(proj_dir):
+	os.mkdir(proj_dir)
+
+temp_str = '''#include<bits/stdc++.h>
+
+using namespace std;
+
+#define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define nline "\\n"
+#define pb push_back
+#define ppb pop_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define PI 3.141592653589793238462
+#define set_bits __builtin_popcountll
+#define sz(x) ((int)(x).size())
+#define all(x) (x).begin(), (x).end()
+#define FREP(i, a, b, d) for(int i = a; i <= b; i += d)
+#define BREP(i, a, b, d) for(int i = a; i >= b; i -= d)
+#define MREP(i, a, b, d) for(int i = a; i <= b; i *= d)
+#define DREP(i, a, b, d) for(int i = a; i >= b; i /= d)
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double lld;
+
+#ifndef ONLINE_JUDGE
+#define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
+void _print(auto t) {cerr << t;}
+template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.ff); cerr << ","; _print(p.ss); cerr << "}";}
+template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
+#else
+#define debug(x)
+#endif
+
+/*
+%s
+*/
+
+void solve(){
+	// solve here
+}
+
+int main() {
+#ifndef ONLINE_JUDGE
+	freopen("%s.err", "w", stderr);
+#endif
+	fastio();
+	auto start_time = chrono::high_resolution_clock::now();
+	solve();
+	auto end_time = chrono::high_resolution_clock::now();
+	lld time_taken = chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
+	time_taken *= 1e-9;
+	cerr << "Time taken " << time_taken << " sec" << nline;
+	return 0;
+}
+'''
+
+str_res = '''{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+'''
+tup_dic = []
+for i in range(0, int(res_text[2])):
+	data_res, input_spec = collect_input(proj_name, string.ascii_uppercase[i])
+	# print(data_res)
+	# print(input_spec)
+	tup_dic.append(data_res)
+	str_res += '''		{
+			"file": "%s.cpp",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+	''' %(proj_name + string.ascii_uppercase[i])
+	if not os.path.exists(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.cpp'):
+		with open(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.cpp', 'w') as f:
+			f.write(temp_str % (input_spec, (proj_name + string.ascii_uppercase[i])))
+for i in range(0, int(res_text[2])):
+	str_res += '''		{
+			"file": "%s.in",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+	''' %(proj_name + string.ascii_uppercase[i])
+	if not os.path.exists(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.in'):
+		with open(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.in', 'w') as f:
+			f.write(tup_dic[i])
+for i in range(0, int(res_text[2])):
+	str_res += '''		{
+			"file": "%s.out",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+	''' %(proj_name + string.ascii_uppercase[i])
+	if not os.path.exists(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.out'):
+		with open(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.out', 'w') as f:
+			f.write("")
+for i in range(0, int(res_text[2])):
+	str_res += '''		{
+			"file": "%s.err",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+	''' %(proj_name + string.ascii_uppercase[i])
+	if not os.path.exists(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.err'):
+		with open(f'{proj_dir}/{proj_name + string.ascii_uppercase[i]}.err', 'w') as f:
+			f.write("")
+str_res += '''	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"%s"
+	],
+	"file_history":
+	[
+
+		"~/.config/sublime-text-3/Packages/User/CP.sublime-build"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"path": "%s"
+		}
+	],
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+''' %(proj_dir, proj_dir)
+trk = 0
+for i in range(0, int(res_text[2])):
+	str_res += '''				{
+					"buffer": %d,
+					"file": "%s.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": %d,
+					"type": "text"
+				},
+	''' %(trk, proj_name + string.ascii_uppercase[i], trk)
+	trk += 1
+
+str_res += '''			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+'''
+for i in range(0, int(res_text[2])):
+	str_res += '''				{
+					"buffer": %d,
+					"file": "%s.in",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": %d,
+					"type": "text"
+				},
+	''' %(trk, proj_name + string.ascii_uppercase[i], trk)
+	trk += 1
+str_res += '''			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+'''
+for i in range(0, int(res_text[2])):
+	str_res += '''				{
+					"buffer": %d,
+					"file": "%s.out",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": %d,
+					"type": "text"
+				},
+	''' %(trk, proj_name + string.ascii_uppercase[i], trk)
+	trk += 1
+str_res += '''			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+'''
+for i in range(0, int(res_text[2])):
+	str_res += '''				{
+					"buffer": %d,
+					"file": "%s.err",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": %d,
+					"type": "text"
+				},
+	''' %(trk, proj_name + string.ascii_uppercase[i], trk)
+	trk += 1
+
+str_res += '''			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				3
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			],
+			[
+				1,
+				2,
+				2,
+				3
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.86019267936,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.232295004527,
+			0.80104115804,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 120.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/CP.sublime-build",
+	"project": "",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"last_automatic_layout":
+		[
+			[
+				0,
+				0,
+				1,
+				3
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			],
+			[
+				1,
+				2,
+				2,
+				3
+			]
+		]
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 2
+	}
+}
+'''
+
+with open(f'{proj_dir}/{proj_name}.sublime-workspace', 'w') as f:
+    f.write(str_res)
+
+
+command = f"subl {proj_dir}/{proj_name}.sublime-workspace"
+
+os.system(command)
