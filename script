@@ -1,20 +1,20 @@
 #! /bin/bash
 
 if [ "{$1}" = "{install}" ]; then
-  cp CP.sublime-build ~/.config/sublime-text-3/Packages/User
-  cp Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User
+  cp CP.sublime-build /home/*/.config/sublime-text/Packages/User
+  cp Preferences.sublime-settings /home/*/.config/sublime-text/Packages/User
+  g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[0]/bits/stdc++.h
   g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[1]/bits/stdc++.h
-  g++ -std=c++20 /usr/include/x86_64-linux-gnu/c++/*[2]/bits/stdc++.h
-  apt-get install python3 python-is-python3
-  pip3 install Pillow beautifulsoup4 requests
-  chmod +x inticon
+  apt-get install python3 python-is-python3 python3-tk python3-pil python3-pil.imagetk
+  pip3 install Pillow beautifulsoup4 requests tk
   cp initcon /usr/local/bin
-  cp CFinit.desktop ~/.local/share/applications
-  cp codeforces.png ~/.local/share/icons/hicolor/128x128/apps
+  cp CFinit.desktop /home/*/.local/share/applications
+  mkdir -p /home/*/.local/share/icons/hicolor/128x128/apps
+  cp codeforces.png /home/*/.local/share/icons/hicolor/128x128/apps
 elif [ "{$1}" = "{uninstall}" ]; then
   rm -rf /usr/local/bin/initcon
-  rm -rf ~/.local/share/applications/CFinit.desktop
-  rm -rf ~/.local/share/icons/hicolor/128x128/apps/codeforces.png
+  rm -rf /home/*/.local/share/applications/CFinit.desktop
+  rm -rf /home/*/.local/share/icons/hicolor/128x128/apps/codeforces.png
 else
   echo "try again"
 fi

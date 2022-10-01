@@ -21,13 +21,19 @@ def collect_input(contstnum, probnum):
 		input_div = input.find_all("div")
 		res = ""
 		if input_div == []:
+
 			res += input.text
+			print(input)
 		else:
 			for inp in input:
-				res += f'{inp.text}\n'
+				try:
+					res += f'{inp.text}\n'
+				except:
+					pass
 		res = res.strip()
 		res += '\n'
 		data_res = res
+		print(data_res)
 		inp = soup.find("div", class_="input-specification")
 		ch = True
 		input_spec = ""
@@ -35,7 +41,7 @@ def collect_input(contstnum, probnum):
 			if ch:
 				ch = False
 				continue
-			inpu = inpu.text
+			inpu = inpu.get_text()
 			res = str(inpu)
 			res = res.strip()
 			res = res.replace("$$$", "")
@@ -65,8 +71,9 @@ def collect_input(contstnum, probnum):
 			res = res.replace("\\cdot", "*")
 			res += '\n'
 			input_spec += res
-		# print(data_res)
-		# print(input_spec)
+		print(URL)
+		print(data_res)
+		print(input_spec)
 		return data_res, input_spec
 	except:
 		return "", ""
